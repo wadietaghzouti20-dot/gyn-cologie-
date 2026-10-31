@@ -47,13 +47,76 @@
     if (!selected.matches('input[name="service"]')) return;
     $(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input",card).checked));
     $("#other-reason-wrap").hidden = selected.value !== "Autre motif";
+    if (dateInput.value) loadAvailableSlots();
   });
   /* Delegated change handling ensures dynamically-created service radios always advance. */
-  const dateInput = $("#appointment-date"), timeInput = $("#appointment-time");
+  const dateInput = $("#appointment-date"), timeSelect = $("#appointment-time"), slotStatus = $("#slot-status");
   const today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
   const todayStr = today.toISOString().slice(0,10);
   dateInput.min = todayStr;
+  dateInput.addEventListener("change", loadAvailableSlots);
 
+  let availabilityLoading = false;
+  let availabilityRequest = 0;
+  let lastSlotDate = "";
+  let lastSlotService = "";
+  async function loadAvailableSlots() {
+    const requestId = ++availabilityRequest;
+    const date = dateInput.value;
+    const service = value("service");
+    const previous = date === lastSlotDate && service === lastSlotService ? timeSelect.value : "";
+    timeSelect.replaceChildren();
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    if (!date || !service) {
+      placeholder.textContent = "Choisissez d’abord une date";
+      timeSelect.append(placeholder);
+      timeSelect.disabled = true;
+      slotStatus.textContent = "Choisissez une date pour afficher les heures disponibles.";
+      availabilityLoading = false;
+      return;
+    }
+    placeholder.textContent = "Chargement des créneaux…";
+    timeSelect.append(placeholder);
+    timeSelect.disabled = true;
+    slotStatus.textContent = "Recherche des heures disponibles…";
+    availabilityLoading = true;
+    try {
+      const response = await fetch(cfg.apiUrl, {
+        method: "POST", redirect: "follow",
+        headers: {"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({action:"availability", preferredDate:date, service:service})
+      });
+      if (!response.ok) throw new Error("Le service de réservation est temporairement indisponible.");
+      const result = await response.json();
+      if (!result || result.success !== true) throw new Error(result && result.message ? result.message : "Impossible de charger les créneaux.");
+      if (requestId !== availabilityRequest) return;
+      const slots = Array.isArray(result.availableSlots) ? result.availableSlots : [];
+      timeSelect.replaceChildren();
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = slots.length ? "Sélectionnez une heure" : "Aucun créneau disponible";
+      timeSelect.append(first);
+      slots.forEach(slot => {
+        const option = document.createElement("option");
+        option.value = slot; option.textContent = slot;
+        if (slot === previous) option.selected = true;
+        timeSelect.append(option);
+      });
+      timeSelect.disabled = slots.length === 0;
+      lastSlotDate = date; lastSlotService = service;
+      slotStatus.textContent = result.message || (slots.length ? "Créneaux disponibles au moment de la vérification." : "Aucun créneau disponible. Essayez une autre date.");
+    } catch (error) {
+      if (requestId !== availabilityRequest) return;
+      timeSelect.replaceChildren();
+      const option = document.createElement("option");
+      option.value = ""; option.textContent = "Créneaux indisponibles";
+      timeSelect.append(option); timeSelect.disabled = true;
+      slotStatus.textContent = error instanceof Error ? error.message : "Impossible de charger les créneaux.";
+    } finally {
+      if (requestId === availabilityRequest) availabilityLoading = false;
+    }
+  }
   function showAlert(message, type = "error") {
     alertBox.textContent = message; alertBox.className = "form-alert " + type; alertBox.hidden = false;
     alertBox.scrollIntoView({behavior:"smooth",block:"nearest"});
@@ -65,7 +128,8 @@
     if (n === 2) {
       if (!dateInput.value) return "Choisissez une date souhaitée.";
       if (dateInput.value < todayStr) return "La date souhaitée doit être aujourd'hui ou dans le futur.";
-      if (!timeInput.value) return "Choisissez une heure précise pour votre rendez-vous.";
+      if (availabilityLoading) return "Veuillez attendre le chargement des créneaux disponibles.";
+      if (!timeSelect.value) return "Veuillez sélectionner une heure disponible.";
     }
     if (n === 3) {
       if (!$("#patient-name").value.trim()) return "Indiquez votre nom et prénom.";
@@ -85,6 +149,7 @@
     $("#back-button").hidden = n === 1;
     $("#continue-button").hidden = n === totalSteps;
     $("#submit-button").hidden = n !== totalSteps;
+    if (n === 2) loadAvailableSlots();
     if (n === totalSteps) renderReview();
     clearAlert();
     $("#form-heading").textContent = n === 1 ? "Commençons" : n === 2 ? "Vos disponibilités" : n === 3 ? "Vos coordonnées" : "Dernière vérification";
@@ -130,6 +195,6 @@
     } catch (err) { showAlert(err.message || "Une erreur est survenue. Réessayez ou contactez le cabinet."); }
     finally { submit.disabled = false; submit.textContent = "Envoyer la demande →"; }
   });
-  $("#new-request").addEventListener("click", () => { form.reset(); form.hidden = false; $("#success-panel").hidden = true; $$(".choice-card",serviceBox).forEach(c=>c.classList.remove("is-selected")); $("#other-reason-wrap").hidden = true; setStep(1); });
+  $("#new-request").addEventListener("click", () => { form.reset(); form.hidden = false; $("#success-panel").hidden = true; $(".choice-card",serviceBox).forEach(c=>c.classList.remove("is-selected")); $("#other-reason-wrap").hidden = true; lastSlotDate = ""; lastSlotService = ""; timeSelect.replaceChildren(); timeSelect.disabled = true; slotStatus.textContent = "Choisissez une date pour afficher les heures disponibles."; setStep(1); });
   setStep(1);
 })();
