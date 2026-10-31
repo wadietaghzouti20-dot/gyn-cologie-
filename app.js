@@ -36,13 +36,18 @@
     const arrow = document.createElement("span"); arrow.className = "choice-arrow"; arrow.setAttribute("aria-hidden","true"); arrow.textContent = "›";
     label.append(input, icon, text, arrow);
     serviceBox.append(label);
-    input.addEventListener("change", () => {
-      $$(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input",card).checked));
-      $("#other-reason-wrap").hidden = input.value !== "Autre motif";
-      setStep(2);
-    });
+  }
   });
 
+  });
+  serviceBox.addEventListener("change", event => {
+    const selected = event.target;
+    if (!selected.matches('input[name="service"]')) return;
+    $(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input",card).checked));
+    $("#other-reason-wrap").hidden = selected.value !== "Autre motif";
+    setStep(2);
+  });
+  /* Delegated change handling ensures dynamically-created service radios always advance. */
   const dateInput = $("#appointment-date");
   const today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
   const todayStr = today.toISOString().slice(0,10);
