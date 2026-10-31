@@ -31,8 +31,8 @@
     <div class="intro-note"><span class="note-icon" aria-hidden="true">i</span><p>Ce formulaire sert uniquement à organiser votre rendez-vous. En cas d'urgence médicale, contactez les services d'urgence plutôt que d'attendre une réponse en ligne.</p></div>
   </section>
   <section class="booking-card" aria-labelledby="form-heading">
-    <div class="card-topline"><div><p class="card-kicker">RÉSERVATION AU CABINET</p><h2 id="form-heading">Commençons</h2></div><span class="step-counter" id="step-counter">Étape 1 sur 4</span></div>
-    <div class="progress-track" id="progress-track" role="progressbar" aria-label="Progression du formulaire" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><span id="progress-fill"></span></div>
+    <div class="card-topline"><div><p class="card-kicker">RÉSERVATION AU CABINET</p><h2 id="form-heading">Commençons</h2></div><span class="step-counter" id="step-counter">Étape 1 sur 5</span></div>
+    <div class="progress-track" id="progress-track" role="progressbar" aria-label="Progression du formulaire" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"><span id="progress-fill"></span></div>
     <div id="form-alert" class="form-alert" role="alert" hidden></div>
     <form id="appointment-form" novalidate>
       <section class="form-step is-active" data-step="1" aria-labelledby="step-title-1">
@@ -58,10 +58,14 @@
         </div></section>
       <section class="form-step" data-step="3" aria-labelledby="step-title-3" hidden>
         <p class="step-label">03 / VOS COORDONNÉES</p><h3 id="step-title-3">Comment pouvons-nous vous contacter ?</h3><p class="step-description">Ces informations servent à traiter votre demande et à vous envoyer les informations du rendez-vous.</p>
-        <div class="field-grid"><div class="field-group"><label for="patient-name">Nom et prénom</label><input id="patient-name" name="name" autocomplete="name" maxlength="100" required placeholder="Votre nom complet"></div><div class="field-group"><label for="patient-phone">Téléphone</label><input id="patient-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" required placeholder="06 xx xx xx xx"></div><div class="field-group full"><label for="patient-email">Adresse e-mail <span>(facultatif)</span></label><input id="patient-email" name="email" type="email" autocomplete="email" maxlength="160" placeholder="vous@exemple.com"></div><div class="field-group full"><label for="patient-note">Note pour le secrétariat <span>(facultatif)</span></label><textarea id="patient-note" name="note" rows="3" maxlength="300" placeholder="Information pratique uniquement (ex. préférence de contact). Ne partagez pas de dossier médical."></textarea><small class="field-hint">N'indiquez pas de diagnostic, résultat d'examen ou autre information médicale sensible.</small></div></div>
+        <div class="field-grid"><div class="field-group"><label for="patient-name">Nom et prénom</label><input id="patient-name" name="name" autocomplete="name" maxlength="100" required placeholder="Votre nom complet"></div><div class="field-group"><label for="patient-phone">Téléphone</label><input id="patient-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" required placeholder="06 xx xx xx xx"></div><div class="field-group full"><label for="patient-email">Adresse e-mail <span>(facultatif)</span></label><input id="patient-email" name="email" type="email" autocomplete="email" maxlength="160" placeholder="vous@exemple.com"></div></div>
       </section>
       <section class="form-step" data-step="4" aria-labelledby="step-title-4" hidden>
-        <p class="step-label">04 / VÉRIFICATION</p><h3 id="step-title-4">Vérifiez votre demande</h3><p class="step-description">Vérifiez les informations avant de transmettre votre demande au cabinet.</p>
+        <p class="step-label">04 / INFORMATIONS COMPLÉMENTAIRES</p><h3 id="step-title-4">Souhaitez-vous ajouter quelque chose ?</h3><p class="step-description">Ne partagez pas de détails médicaux sensibles dans ce champ.</p>
+        <div class="field-group"><label for="patient-note">Note pour le secrétariat <span>(facultatif)</span></label><textarea id="patient-note" name="note" rows="4" maxlength="300" placeholder="Information pratique uniquement (ex. préférence de contact). Ne partagez pas de dossier médical."></textarea><small class="field-hint">N'indiquez pas de diagnostic, résultat d'examen ou autre information médicale sensible.</small></div>
+      </section>
+      <section class="form-step" data-step="5" aria-labelledby="step-title-5" hidden>
+        <p class="step-label">05 / VÉRIFICATION</p><h3 id="step-title-5">Vérifiez votre demande</h3><p class="step-description">Vérifiez les informations avant de transmettre votre demande au cabinet.</p>
         <dl class="review-list" id="review-list"></dl>
         <label class="consent-row"><input type="checkbox" id="privacy-consent" required><span>J'accepte que le cabinet utilise ces coordonnées pour traiter ma demande de rendez-vous. Les informations ne doivent pas être utilisées à d'autres fins sans base appropriée.</span></label>
         <div class="pending-note" id="integration-note"><strong>Confirmation sécurisée</strong><p>La connexion de réservation n'est pas encore configurée. Aucune demande ne sera envoyée tant que le cabinet n'aura pas activé son système.</p></div>
