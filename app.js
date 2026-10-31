@@ -39,7 +39,6 @@
       input.checked = true;
       $(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input", card).checked));
       $("#other-reason-wrap").hidden = input.value !== "Autre motif";
-      setStep(2);
     });
     serviceBox.append(label);
   });
@@ -48,7 +47,6 @@
     if (!selected.matches('input[name="service"]')) return;
     $(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input",card).checked));
     $("#other-reason-wrap").hidden = selected.value !== "Autre motif";
-    setStep(2);
   });
   /* Delegated change handling ensures dynamically-created service radios always advance. */
   const dateInput = $("#appointment-date");
