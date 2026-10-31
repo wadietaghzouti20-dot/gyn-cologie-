@@ -38,8 +38,6 @@
     serviceBox.append(label);
   }
   });
-
-  });
   serviceBox.addEventListener("change", event => {
     const selected = event.target;
     if (!selected.matches('input[name="service"]')) return;
