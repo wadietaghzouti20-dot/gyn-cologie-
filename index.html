@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="config.js" defer></script>
-  <script src="app.js?v=20261031-8" defer></script>
+  <script src="app.js?v=20261031-9" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#booking">Passer au formulaire</a>
@@ -41,10 +41,21 @@
         <div class="field-group" id="other-reason-wrap" hidden><label for="other-reason">Précision facultative</label><input id="other-reason" name="otherReason" maxlength="120" placeholder="Précision courte, sans détail médical"></div>
       </section>
       <section class="form-step" data-step="2" aria-labelledby="step-title-2" hidden>
-        <p class="step-label">02 / DISPONIBILITÉS</p><h3 id="step-title-2">Quand souhaitez-vous venir ?</h3><p class="step-description">Choisissez une date et une heure précises. Le cabinet vérifiera le créneau avant de confirmer votre rendez-vous.</p>
-        <div class="field-grid"><div class="field-group"><label for="appointment-date">Date souhaitée</label><input id="appointment-date" name="date" type="date" required><small class="field-hint">Choisissez le jour souhaité.</small></div><div class="field-group"><label for="appointment-time">Heure souhaitée</label><input id="appointment-time" name="time" type="time" required step="900"><small class="field-hint">Heure exacte (format 24 h).</small></div></div>
-        
-      </section>
+        <p class="step-label">02 / DATE ET HORAIRE</p>
+        <h3 id="step-title-2">Quand êtes-vous disponible ?</h3>
+        <p class="step-description">Choisissez une date pour afficher les horaires disponibles.</p>
+        <div class="field-group">
+          <label for="appointment-date">Date souhaitée <span class="required">*</span></label>
+          <input id="appointment-date" name="date" type="date" required>
+          <small class="field-hint">Les dates passées ne sont pas acceptées.</small>
+        </div>
+        <div class="field-group">
+          <label for="appointment-time">Heure disponible <span class="required">*</span></label>
+          <select id="appointment-time" name="time" required disabled>
+            <option value="">Choisissez d’abord une date</option>
+          </select>
+          <small class="field-hint" id="slot-status" aria-live="polite">Choisissez une date pour afficher les heures disponibles.</small>
+        </div></section>
       <section class="form-step" data-step="3" aria-labelledby="step-title-3" hidden>
         <p class="step-label">03 / VOS COORDONNÉES</p><h3 id="step-title-3">Comment pouvons-nous vous contacter ?</h3><p class="step-description">Ces informations servent à traiter votre demande et à vous envoyer les informations du rendez-vous.</p>
         <div class="field-grid"><div class="field-group"><label for="patient-name">Nom et prénom</label><input id="patient-name" name="name" autocomplete="name" maxlength="100" required placeholder="Votre nom complet"></div><div class="field-group"><label for="patient-phone">Téléphone</label><input id="patient-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" required placeholder="06 xx xx xx xx"></div><div class="field-group full"><label for="patient-email">Adresse e-mail <span>(facultatif)</span></label><input id="patient-email" name="email" type="email" autocomplete="email" maxlength="160" placeholder="vous@exemple.com"></div><div class="field-group full"><label for="patient-note">Note pour le secrétariat <span>(facultatif)</span></label><textarea id="patient-note" name="note" rows="3" maxlength="300" placeholder="Information pratique uniquement (ex. préférence de contact). Ne partagez pas de dossier médical."></textarea><small class="field-hint">N'indiquez pas de diagnostic, résultat d'examen ou autre information médicale sensible.</small></div></div>
