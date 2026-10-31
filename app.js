@@ -35,6 +35,12 @@
     text.append(strong, small);
     const arrow = document.createElement("span"); arrow.className = "choice-arrow"; arrow.setAttribute("aria-hidden","true"); arrow.textContent = "›";
     label.append(input, icon, text, arrow);
+    label.addEventListener("click", () => {
+      input.checked = true;
+      $(".choice-card", serviceBox).forEach(card => card.classList.toggle("is-selected", $("input", card).checked));
+      $("#other-reason-wrap").hidden = input.value !== "Autre motif";
+      setStep(2);
+    });
     serviceBox.append(label);
   });
   serviceBox.addEventListener("change", event => {
