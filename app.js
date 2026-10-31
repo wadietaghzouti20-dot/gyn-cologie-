@@ -152,7 +152,6 @@
     if (n === 2) loadAvailableSlots();
     if (n === totalSteps) renderReview();
     clearAlert();
-    $("#form-heading").textContent = n === 1 ? "Commençons" : n === 2 ? "Vos disponibilités" : n === 3 ? "Vos coordonnées" : n === 4 ? "Informations complémentaires" : "Dernière vérification";
     $("#booking").scrollIntoView({behavior:"smooth",block:"start"});
   }
   function value(name) { const el = form.elements[name]; if (!el) return ""; if (el instanceof RadioNodeList) return el.value || ""; return el.value || ""; }
