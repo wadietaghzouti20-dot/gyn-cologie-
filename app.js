@@ -36,7 +36,6 @@
     const arrow = document.createElement("span"); arrow.className = "choice-arrow"; arrow.setAttribute("aria-hidden","true"); arrow.textContent = "›";
     label.append(input, icon, text, arrow);
     serviceBox.append(label);
-  }
   });
   serviceBox.addEventListener("change", event => {
     const selected = event.target;
